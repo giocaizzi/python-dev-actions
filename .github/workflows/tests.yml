@@ -16,7 +16,7 @@ jobs:
           fail-fast: false
           matrix:
             # os: [ubuntu-latest] #macos-latest
-            python-version: ${{fromJson(github.event.inputs.python-versions)}}
+            python-version: ${{fromJson(inputs.python-versions)}}
         steps:
 
             - uses: python-dev-actions/.github/workflows/test-python-version.yml@main

@@ -15,14 +15,14 @@ on:
 
 jobs:
   tests:
-    runs-on: ${{ github.event.inputs.os }}
+    runs-on: ${{ inputs.os }}
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ github.event.inputs.python-version }}
+    - name: Set up Python ${{ inputs.python-version }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ github.event.inputs.python-version }}
+        python-version: ${{ inputs.python-version }}
         
     - name: Install dependencies
       run: |
