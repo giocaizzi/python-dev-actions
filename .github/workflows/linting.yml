@@ -2,11 +2,6 @@ name: Flake8 Linting
 
 on:
     workflow_call:
-        inputs:
-            repo:
-                description: 'Repository name'
-                type: string
-                required: true
 
 jobs:
   lint:
@@ -29,4 +24,4 @@ jobs:
     # local flake8 config is in .flake8
 
     - name: Lint with flake8
-      run : flake8 ${{ inputs.repo}}
+      run : flake8 ${{ github.event.repository.name }}
