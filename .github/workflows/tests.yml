@@ -1,0 +1,28 @@
+name: Run tests
+
+on:
+    workflow_call:
+        inputs:
+            python-versions:
+              description: 'Stringfied list of Python versions'
+              type: string
+              default: '["3.7", "3.8", "3.9", "3.10"]'
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        strategy:
+        # allow the matrix to not fail completely if one fails
+          fail-fast: false
+          matrix:
+            # os: [ubuntu-latest] #macos-latest
+            python-version: ${{fromJson(github.event.inputs.python-versions)}}
+        steps:
+
+            - uses: python-dev-actions/.github/workflows/test-python-version.yml@main
+              with:
+                python-version: ${{ matrix.python-version }}
+
+            - name: "Upload coverage to Codecov"
+              uses: codecov/codecov-action@v3
+              if: matrix.python-version == '3.10'
