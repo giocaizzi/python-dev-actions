@@ -21,7 +21,7 @@ jobs:
             python-version: ${{fromJson(inputs.python-versions)}}
         steps:
 
-            - uses: python-dev-actions/.github/workflows/test-python-version.yml@main
+            - uses: giocaizzi/python-dev-actions/.github/workflows/test-python-version.yml@main
               with:
                 python-version: ${{ matrix.python-version }}
 
