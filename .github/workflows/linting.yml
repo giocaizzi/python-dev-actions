@@ -1,0 +1,32 @@
+name: Flake8 Linting
+
+on:
+    workflow_call:
+        inputs:
+            repo:
+                description: 'Repository name'
+                type: string
+                required: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.9"
+
+    - name: Set up dependencies
+      run: |
+        python -m pip install --upgrade pip 
+        python -m pip install flake8 flake8-rst-docstrings
+
+    # this linting considers also RST errors for Building the docs
+    # local flake8 config is in .flake8
+
+    - name: Lint with flake8
+      run : flake8 ${{ inputs.repo}}
