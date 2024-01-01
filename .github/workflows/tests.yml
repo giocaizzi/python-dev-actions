@@ -6,7 +6,9 @@ on:
             python-versions:
               description: 'Stringfied list of Python versions'
               type: string
-              default: '["3.7", "3.8", "3.9", "3.10"]'
+              # double quotes outside and single quotes inside
+              # for json parsing
+              default: "['3.7', '3.8', '3.9', '3.10']"
 
 jobs:
     tests:
