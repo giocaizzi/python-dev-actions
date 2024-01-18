@@ -48,19 +48,17 @@ jobs:
                 else
                     echo "pytest.ini not found"
                     echo "::warning ::pytest.ini not found, using default pytest params"
-                    exit 1
                 fi
             
             - name: Check pytest.ini on Windows
               if: matrix.os == 'windows-latest'
               run : |
-                if exist pytest.ini (
-                    echo "pytest.ini found"
-                ) else (
-                    echo "pytest.ini not found"
-                    echo "::warning ::pytest.ini not found, using default pytest params"
-                    exit 1
-                )
+                if (Test-Path pytest.ini) {
+                  Write-Host "pytest.ini found"
+                } else {
+                  Write-Host "pytest.ini not found"
+                  Write-Host "::warning ::pytest.ini not found, using default pytest params"
+                }
               
                 
             - run: |
