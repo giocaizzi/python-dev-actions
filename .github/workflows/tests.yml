@@ -16,14 +16,13 @@ on:
 
 jobs:
     tests:
-        runs-on: ${{ matrix.os }}
         strategy:
         # allow the matrix to not fail completely if one fails
           fail-fast: false
           matrix:
             os: ${{fromJson(inputs.os)}}
             python-version: ${{fromJson(inputs.python-versions)}}
-
+        runs-on: ${{ matrix.os }}
         steps:
             - uses: actions/checkout@v4
 
