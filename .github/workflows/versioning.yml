@@ -6,13 +6,16 @@ on:
 jobs:
   check-version-update:
     runs-on: ubuntu-latest
+    outputs:
+      changed-files: ${{ steps.check-changes.outputs.changed-files }}
     steps:
       - name: Check Out Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Verify versions
+      - name: Check for changed files in the package folder
+        id: check-changes
         run: |
           # Get the commit hashes for the base and head branches
           BASE_SHA=$(git rev-parse origin/${{ github.base_ref }})
@@ -27,6 +30,15 @@ jobs:
           # Check if there are changes in the specific folder
           CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
 
+          # Set the output variable
+          if [[ -n "$CHANGED_FILES" ]]; then
+            echo "changed-files=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed-files=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Execute versioning checks
+        run: |
           if [[ -n "$CHANGED_FILES" ]]; then
             echo "------------------------------------------"
             echo "There are changes in the ${{ github.event.repository.name }} folder"
