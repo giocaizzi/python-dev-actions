@@ -40,7 +40,8 @@ jobs:
         
             # pytest params specified in pytest.ini,
             # check if pytest.ini is in the root directory
-            - name: Check pytest.ini
+            - name: Check pytest.ini on Linux and MacOS
+              if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
               run : |
                 if [ -f pytest.ini ]; then
                     echo "pytest.ini found"
@@ -49,6 +50,18 @@ jobs:
                     echo "::warning ::pytest.ini not found, using default pytest params"
                     exit 1
                 fi
+            
+            - name: Check pytest.ini on Windows
+              if: matrix.os == 'windows-latest'
+              run : |
+                if exist pytest.ini (
+                    echo "pytest.ini found"
+                ) else (
+                    echo "pytest.ini not found"
+                    echo "::warning ::pytest.ini not found, using default pytest params"
+                    exit 1
+                )
+              
                 
             - run: |
                 pytest 
