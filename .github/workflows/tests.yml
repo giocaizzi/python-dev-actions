@@ -38,10 +38,22 @@ jobs:
                 pip install .
                 pip install -r tests/requirements.txt
         
-            # pytest params specified in pytest.ini
+            # pytest params specified in pytest.ini,
+            # check if pytest.ini is in the root directory
+            - name: Check pytest.ini
+              run : |
+                if [ -f pytest.ini ]; then
+                    echo "pytest.ini found"
+                else
+                    echo "pytest.ini not found"
+                    echo "::warning ::pytest.ini not found, using default pytest params"
+                    exit 1
+                fi
+                
             - run: |
                 pytest 
             
+            # upload coverage to codecov only once
             - name: "Upload coverage to Codecov"
               uses: codecov/codecov-action@v3
               if: matrix.python-version == '3.10'
