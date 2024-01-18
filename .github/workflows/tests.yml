@@ -1,69 +1,70 @@
 name: Run tests
 
 on:
-    workflow_call:
-        inputs:
-            python-versions:
-              description: 'Stringfied list of Python versions'
-              type: string
-              # double quotes outside and single quotes inside
-              # for json parsing
-              default: "['3.7', '3.8', '3.9', '3.10','3.11','3.12']"
-            os:
-              description: 'Operating system'
-              type: string
-              required: true
+  workflow_call:
+    inputs:
+      python-versions:
+        description: 'Stringfied list of Python versions'
+        type: string
+        # double quotes outside and single quotes inside
+        # for json parsing
+        default: "['3.7', '3.8', '3.9', '3.10','3.11','3.12']"
+      os:
+        description: 'Operating system'
+        type: string
+        required: true
 
 jobs:
-    tests:
-        strategy:
-        # allow the matrix to not fail completely if one fails
-          fail-fast: false
-          matrix:
-            python-version: ${{fromJson(inputs.python-versions)}}
-        runs-on: ${{inputs.os}}
-        steps:
-            - uses: actions/checkout@v4
+  tests:
+    strategy:
+    # allow the matrix to not fail completely if one fails
+      fail-fast: false
+      matrix:
+        python-version: ${{fromJson(inputs.python-versions)}}
+    runs-on: ${{inputs.os}}
+    steps:
+        - uses: actions/checkout@v4
 
-            - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v5
-              with:
-                python-version: ${{ matrix.python-version }}
-                
-            - name: Install dependencies
-              run: |
-                python -m pip install --upgrade pip
-                pip install -r requirements.txt
-                pip install .
-                pip install -r tests/requirements.txt
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v5
+          with:
+            python-version: ${{ matrix.python-version }}
+            
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+            pip install .
+            pip install -r tests/requirements.txt
+    
+        # pytest params specified in pytest.ini,
+        # check if pytest.ini is in the root directory
+        - name: Check pytest.ini on Linux and MacOS
+          if: ${{inputs.os}} == 'ubuntu-latest' || ${{inputs.os}} == 'macos-latest'
+          run : |
+            echo ${{inputs.os}}
+            if [ -f pytest.ini ]; then
+                echo "pytest.ini found"
+            else
+                echo "pytest.ini not found"
+                echo "::warning ::pytest.ini not found, using default pytest params"
+            fi
         
-            # pytest params specified in pytest.ini,
-            # check if pytest.ini is in the root directory
-            - name: Check pytest.ini on Linux and MacOS
-              if: ${{inputs.os}} == 'ubuntu-latest' || ${{inputs.os}} == 'macos-latest'
-              run : |
-                if [ -f pytest.ini ]; then
-                    echo "pytest.ini found"
-                else
-                    echo "pytest.ini not found"
-                    echo "::warning ::pytest.ini not found, using default pytest params"
-                fi
+        - name: Check pytest.ini on Windows
+          if: ${{inputs.os}} == 'windows-latest'
+          run : |
+            if (Test-Path pytest.ini) {
+              Write-Host "pytest.ini found"
+            } else {
+              Write-Host "pytest.ini not found"
+              Write-Host "::warning ::pytest.ini not found, using default pytest params"
+            }
+          
             
-            - name: Check pytest.ini on Windows
-              if: ${{inputs.os}} == 'windows-latest'
-              run : |
-                if (Test-Path pytest.ini) {
-                  Write-Host "pytest.ini found"
-                } else {
-                  Write-Host "pytest.ini not found"
-                  Write-Host "::warning ::pytest.ini not found, using default pytest params"
-                }
-              
-                
-            - run: |
-                pytest 
-            
-            # upload coverage to codecov only once
-            - name: "Upload coverage to Codecov"
-              uses: codecov/codecov-action@v3
-              if: matrix.python-version == '3.10' && ${{inputs.os}} == 'ubuntu-latest'
+        - run: |
+            pytest 
+        
+        # upload coverage to codecov only once
+        - name: "Upload coverage to Codecov"
+          uses: codecov/codecov-action@v3
+          if: matrix.python-version == '3.10' && ${{inputs.os}} == 'ubuntu-latest'
