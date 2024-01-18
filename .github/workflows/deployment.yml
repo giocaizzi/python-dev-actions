@@ -1,15 +1,14 @@
-name: Deployment on 
+name: Deployment on
 
 on:
   workflow_call:
     inputs:
       os:
-        description: 'Operating system to run on'
-        default: 'ubuntu-latest'
+        description: "Operating system to run on"
+        default: "ubuntu-latest"
         type: string
 
 jobs:
-
   # First check for linting errors and versioning issues
   lint:
     name: Lint with Flake8
@@ -17,14 +16,14 @@ jobs:
   versioning:
     name: Versioning checks
     uses: giocaizzi/python-dev-actions/.github/workflows/versioning.yml@main
-  
+
   # Run Tests
   tests:
     name: Tests with Pytest
     uses: giocaizzi/python-dev-actions/.github/workflows/tests.yml@main
     with:
       os: ${{ inputs.os }}
-    needs: ['lint', 'versioning']
+    needs: ["lint", "versioning"]
 
   # If in a pull request and in 'ubuntu-latest', run documentation prechecks
   documentation-prechecks:
@@ -32,4 +31,4 @@ jobs:
     name: Documentation prechecks
     if: github.event_name == 'pull_request'
     uses: giocaizzi/python-dev-actions/.github/workflows/documentation_precheck.yml@main
-    needs: ['lint', 'versioning']
+    needs: ["lint", "versioning"]

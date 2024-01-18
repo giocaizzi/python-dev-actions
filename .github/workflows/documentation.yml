@@ -1,7 +1,7 @@
 name: Documentation build
 
 on:
-    workflow_call:
+  workflow_call:
 
 jobs:
   docs:

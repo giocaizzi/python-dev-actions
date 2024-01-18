@@ -87,5 +87,3 @@ jobs:
             echo "There are no changes in the ${{ github.event.repository.name }} folder"
             exit 0
           fi
-
-
