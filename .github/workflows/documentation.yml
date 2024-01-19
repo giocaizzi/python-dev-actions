@@ -5,6 +5,7 @@ on:
 
 jobs:
   docs:
+    name: Building documentation with Python 3.9
     runs-on: ubuntu-latest
     steps:
       # python 3.9 installation
