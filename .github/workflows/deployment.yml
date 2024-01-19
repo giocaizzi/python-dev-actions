@@ -12,15 +12,15 @@ jobs:
   # First check for linting errors and versioning issues
   lint:
     name: Lint with Flake8
-    uses: giocaizzi/python-dev-actions/.github/workflows/linting.yml@main
+    uses: giocaizzi/python-dev-actions/.github/workflows/deployment/linting.yml@main
   versioning:
     name: Versioning checks
-    uses: giocaizzi/python-dev-actions/.github/workflows/versioning.yml@main
+    uses: giocaizzi/python-dev-actions/.github/workflows/deployment/versioning.yml@main
 
   # Run Tests
   tests:
     name: Tests with Pytest
-    uses: giocaizzi/python-dev-actions/.github/workflows/tests.yml@main
+    uses: giocaizzi/python-dev-actions/.github/workflows/deployment/tests.yml@main
     with:
       os: ${{ inputs.os }}
     needs: ["lint", "versioning"]
@@ -29,5 +29,5 @@ jobs:
   documentation-prechecks:
     name: Documentation prechecks
     if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
-    uses: giocaizzi/python-dev-actions/.github/workflows/documentation_precheck.yml@main
+    uses: giocaizzi/python-dev-actions/.github/workflows/deployment/documentation_precheck.yml@main
     needs: ["lint", "versioning"]
