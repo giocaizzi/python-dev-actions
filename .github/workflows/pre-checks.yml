@@ -10,7 +10,7 @@ jobs:
     uses: giocaizzi/python-dev-actions/.github/workflows/linting.yml@main
 
   versioning:
-    name: Versioning checks on PRs
-    # it's coded only for pull requests
+    name: Versioning checks
+    # it's coded only for pull requests, this avoids if erroneously called on push
     if: github.event_name == 'pull_request'
     uses: giocaizzi/python-dev-actions/.github/workflows/versioning.yml@main

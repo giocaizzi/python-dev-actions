@@ -18,7 +18,7 @@ jobs:
 
   # If in a pull request and in 'ubuntu-latest' (so only once), run documentation prechecks
   documentation-prechecks:
-    name: Documentation prechecks
+    name: PR Documentation prechecks on ubuntu-latest
     if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
     uses: giocaizzi/python-dev-actions/.github/workflows/documentation_precheck.yml@main
     needs: "pre-checks"
