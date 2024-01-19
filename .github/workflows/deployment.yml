@@ -12,6 +12,8 @@ jobs:
   # First check for linting errors and versioning issues
   pre-checks:
     name: Run prechecks
+    # run pre-checks once, only on ubuntu-latest
+    if: inputs.os == 'ubuntu-latest'
     uses: giocaizzi/python-dev-actions/.github/workflows/pre-checks.yml@main
 
   # Run Tests
