@@ -41,7 +41,7 @@ jobs:
       # pytest params specified in pytest.ini,
       # check if pytest.ini is in the root directory
       - name: Check pytest.ini on Linux and MacOS
-        if: ${{github.event.inputs.os}} == 'ubuntu-latest' || ${{github.event.inputs.os}} == 'macos-latest'
+        if: inputs.os == 'ubuntu-latest' || inputs.os == 'macos-latest'
         run: |
           echo ${{inputs.os}}
           if [ -f pytest.ini ]; then
@@ -52,7 +52,7 @@ jobs:
           fi
 
       - name: Check pytest.ini on Windows
-        if: ${{ github.event.inputs.os }} == 'windows-latest'
+        if: inputs.os == 'windows-latest'
         run: |
           if (Test-Path pytest.ini) {
             Write-Host "pytest.ini found"
@@ -67,4 +67,4 @@ jobs:
       # upload coverage to codecov only once
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v3
-        if: matrix.python-version == '3.10' && ${{inputs.os}} == 'ubuntu-latest'
+        if: matrix.python-version == '3.10' && inputs.os == 'ubuntu-latest'
