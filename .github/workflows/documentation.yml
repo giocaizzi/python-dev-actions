@@ -31,9 +31,13 @@ jobs:
           pip install -r docsrc/requirements.txt
           pip install .
 
+      # build documentation
+      # run custom gitclean so to clear all local builds to avoid conflicts
+      # eg. (when with major refactoring in submodules)
       - name: Build docs
         run: |
           cd docsrc/
+          make gitclean
           make github-action
           cd ..
 
