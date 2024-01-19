@@ -28,6 +28,6 @@ jobs:
   # If in a pull request and in 'ubuntu-latest', run documentation prechecks
   documentation-prechecks:
     name: Documentation prechecks
-    if: github.event_name == 'pull_request' && github.event.inputs.os == 'ubuntu-latest'
+    if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
     uses: giocaizzi/python-dev-actions/.github/workflows/documentation_precheck.yml@main
     needs: ["lint", "versioning"]
