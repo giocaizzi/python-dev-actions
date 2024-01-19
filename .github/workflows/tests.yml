@@ -16,6 +16,7 @@ on:
 
 jobs:
   tests:
+    name: Python ${{ matrix.python-version }} on ${{inputs.os}}
     strategy:
       # allow the matrix to not fail completely if one fails
       fail-fast: false

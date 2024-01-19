@@ -5,7 +5,7 @@ on:
     inputs:
       os:
         description: "Operating system to run on"
-        default: "ubuntu-latest"
+        default: 'ubuntu-latest'
         type: string
 
 jobs:
