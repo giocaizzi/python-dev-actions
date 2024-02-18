@@ -44,7 +44,7 @@ runs:
       - name: Commit documentation changes
         shell: bash
         run: |
-          git commit -m ${{ inputs.message }} -a  || true
+          git commit -m "${{ inputs.message }}" -a  || true
 
       - name: Push changes
         uses: ad-m/github-push-action@master
