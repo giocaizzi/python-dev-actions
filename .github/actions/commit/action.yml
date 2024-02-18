@@ -1,5 +1,7 @@
 name: Commit to GitHub
-description: 'Commits changes to the repository and push'
+description: 'Commits changes to the repository and push to Github'
+
+
 
 inputs:
   what:
@@ -7,6 +9,9 @@ inputs:
     default: '.'
   message:
     description: 'Commit message'
+    required: true
+  github-token:
+    description: 'GitHub token'
     required: true
 
 runs:
@@ -28,4 +33,4 @@ runs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ inputs.github-token }}
