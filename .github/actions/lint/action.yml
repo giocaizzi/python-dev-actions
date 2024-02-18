@@ -1,0 +1,9 @@
+name: Lint with Flake8
+description: 'Lint Python code with Flake8'
+
+runs:
+  using: composite
+  steps:
+    - name: Lint with flake8
+      shell: bash
+      run: flake8 ${{ github.event.repository.name }}

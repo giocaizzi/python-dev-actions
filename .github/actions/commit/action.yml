@@ -14,7 +14,7 @@ inputs:
     description: 'GitHub token'
     required: true
   branch:
-    description: 'Branch to push to. By default is the branch calling the action'
+    description: 'Branch to push to.'
 
 runs:
     using: "composite"
