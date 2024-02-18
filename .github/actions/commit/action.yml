@@ -17,17 +17,33 @@ inputs:
 runs:
     using: "composite"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name : Print current branch
+        shell: bash
+        run : |
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch is $BRANCH"
 
-      # The last command will fail if no changes were present, so we ignore
+      - name: Set up Git
+        shell: bash
+        run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+
+      - name: Print git status
+        shell: bash
+        run: |
+          git status
+
+      - name: Add changes
+        shell: bash
+        run: |
+          git add ${{ inputs.what }}
+
+      # The command will fail if no changes were present, so we ignore
       # the return code.
       - name: Commit documentation changes
         shell: bash
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add ${{ inputs.what }}
           git commit -m ${{ inputs.message }} -a  || true
 
       - name: Push changes
