@@ -2,15 +2,41 @@ name: Pre-checks
 
 on:
   workflow_call:
+    inputs:
+      python-version:
+        description: "Python version"
+        type: string
+        required: true
+        default: "3.9"
+      os:
+        description: "Operating system"
+        type: string
+        required: true
+        default: "ubuntu-latest"
 
 jobs:
-  # First check for linting errors and versioning issues
   lint:
-    name: Lint with Flake8
-    uses: giocaizzi/python-dev-actions/.github/workflows/linting.yml@main
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # required for the versioning action
 
-  versioning:
-    name: Versioning checks
-    # it's coded only for pull requests, this avoids if erroneously called on push
-    if: github.event_name == 'pull_request'
-    uses: giocaizzi/python-dev-actions/.github/workflows/versioning.yml@main
+      - name: Set up Python ${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Set up dependencies
+        run: |
+          python -m pip install --upgrade pip 
+          python -m pip install flake8 flake8-rst-docstrings
+
+      - name: Lint with Flake8
+        uses: giocaizzi/python-dev-actions/.github/actions/lint@main
+
+      - name: Versioning checks
+        # it's coded only for pull requests, this avoids if erroneously called on push
+        if: github.event_name == 'pull_request'
+        uses: giocaizzi/python-dev-actions/.github/actions/versioning@main
