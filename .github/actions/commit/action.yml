@@ -1,5 +1,5 @@
 name: Commit to GitHub
-description: 'Commits changes to the repository'
+description: 'Commits changes to the repository and push'
 
 inputs:
   what:
@@ -22,8 +22,8 @@ runs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Actions: Sync mobile config" -a  || true
+          git add ${{ inputs.what }}
+          git commit -m ${{ inputs.message }} -a  || true
 
       - name: Push changes
         uses: ad-m/github-push-action@master
