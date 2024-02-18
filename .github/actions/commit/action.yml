@@ -13,6 +13,8 @@ inputs:
   github-token:
     description: 'GitHub token'
     required: true
+  branch:
+    description: 'Branch to push to. By default is the branch calling the action'
 
 runs:
     using: "composite"
@@ -50,3 +52,4 @@ runs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ inputs.github-token }}
+          branch: ${{ inputs.branch }}
