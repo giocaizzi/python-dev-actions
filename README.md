@@ -1,10 +1,8 @@
 # python-dev-actions
 
-A collection of reusable GitHub Actions for Python projects.
+A collection of reusable GitHub Actions and Workflows for developing Python projects.
 
-| workflow | description |
-| -------- | ----------- |
-| [tests.yml](.github/workflows/tests.yml) | test Python project with *pytest*|
-| [linting.yml](.github/workflows/lint.yml) | lint Python project with *flake8* |
-| [todo.yml](.github/workflows/todo.yml) | make issues from TODO comments |
+- [Workflows](./.github/workflows/README.md)
+- [Actions](./.github/actions/README.md)
+
 
