@@ -20,7 +20,7 @@ jobs:
   # - versioning (if PR)
   # - documentation-merge-check (if PR)
   pre-checks:
-    name: Run prechecks
+    name:  ${{ inputs.os }} pre-checks with ${{ inputs.python-version }}
     uses: giocaizzi/python-dev-actions/.github/workflows/pre-checks.yml@main
     with :
       os: ${{ inputs.os }}
@@ -29,7 +29,7 @@ jobs:
 
   # Run Tests workflow on specified OS for a matrix of python versions
   tests:
-    name: Tests with Pytest
+    name: ${{ inputs.os }} tests
     needs: "pre-checks"
     uses: giocaizzi/python-dev-actions/.github/workflows/tests.yml@main
     with:
