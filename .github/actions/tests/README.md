@@ -1,3 +1,4 @@
 # Tests
 
-Test with pytest.
+- Test with pytest
+- Upload to Codecov.io
