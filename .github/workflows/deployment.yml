@@ -20,7 +20,7 @@ jobs:
   # - versioning (if PR)
   # - documentation-merge-check (if PR)
   pre-checks:
-    name:  ${{ inputs.os }} pre-checks with ${{ inputs.python-version }}
+    name:  ${{ inputs.os }}-py${{ inputs.python-version }}
     uses: giocaizzi/python-dev-actions/.github/workflows/pre-checks.yml@main
     with :
       os: ${{ inputs.os }}
