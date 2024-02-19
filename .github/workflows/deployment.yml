@@ -9,16 +9,22 @@ on:
         description: "Operating system to run on"
         default: 'ubuntu-latest'
         type: string
+      python-version:
+        description: "Python version to run on"
+        default: '3.9'
+        type: string
 
 jobs:
   # Run pre-checks workflow.
-  # Default: ubuntu-latest and python 3.9
   # - lint
-  # - versioning
-  # - documentation-merge-check
+  # - versioning (if PR)
+  # - documentation-merge-check (if PR)
   pre-checks:
     name: Run prechecks
     uses: giocaizzi/python-dev-actions/.github/workflows/pre-checks.yml@main
+    with :
+      os: ${{ inputs.os }}
+      python-version: ${{ inputs.python-version }}
 
 
   # Run Tests workflow on specified OS for a matrix of python versions
