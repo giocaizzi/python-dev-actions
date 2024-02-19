@@ -10,6 +10,7 @@ runs:
   using : 'composite'
   steps:
     - name: Install dependencies
+      shell: bash
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -19,6 +20,7 @@ runs:
     # pytest params specified in pytest.ini,
     # check if pytest.ini is in the root directory
     - name: Check pytest.ini on Linux and MacOS
+      shell : bash
       if: inputs.os == 'ubuntu-latest' || inputs.os == 'macos-latest'
       run: |
         echo ${{inputs.os}}
@@ -30,6 +32,7 @@ runs:
         fi
 
     - name: Check pytest.ini on Windows
+      shell : pwsh
       if: inputs.os == 'windows-latest'
       run: |
         Write-Host ${{inputs.os}}
@@ -40,7 +43,9 @@ runs:
           Write-Host "::warning ::pytest.ini not found, using default pytest params"
         }
 
-    - run: |
+    - name: Run tests
+      shell: bash
+      run: |
         pytest
 
     # upload coverage to codecov only once
