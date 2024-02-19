@@ -1,6 +1,8 @@
 name: Deployment
 
 on:
+  workflow_dispatch:
+
   workflow_call:
     inputs:
       os:
@@ -9,26 +11,28 @@ on:
         type: string
 
 jobs:
-  # First run pre-checks:
-  # - linting errors
-  # - versioning issues
+  # Run pre-checks workflow.
+  # Default: ubuntu-latest and python 3.9
+  # - lint
+  # - versioning
+  # - documentation-merge-check
   pre-checks:
     name: Run prechecks
     uses: giocaizzi/python-dev-actions/.github/workflows/pre-checks.yml@main
 
-  # If in a pull request and in 'ubuntu-latest' (so only once), run documentation prechecks
-  documentation-prechecks:
-    name: PR Documentation prechecks on ubuntu-latest
-    if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
-    uses: giocaizzi/python-dev-actions/.github/workflows/documentation_precheck.yml@main
-    needs: "pre-checks"
-    
-  # Run Tests
+
+  # Run Tests workflow on specified OS for a matrix of python versions
   tests:
     name: Tests with Pytest
+    needs: "pre-checks"
     uses: giocaizzi/python-dev-actions/.github/workflows/tests.yml@main
     with:
       os: ${{ inputs.os }}
-    needs: "pre-checks"
+
+  # # Execute post-deployment actions
+  # post-deployment:
+  #   name: Open issues from TODOs
+  #   needs: "tests"
+  #   uses: giocaizzi/python-dev-actions/.github/actions/todo@main
 
 

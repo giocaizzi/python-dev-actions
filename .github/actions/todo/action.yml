@@ -1,0 +1,8 @@
+name: Issues from TODOs
+description: "Create issues from TODOs in code"
+
+runs:
+  using: "composite"
+  steps:
+    - name: workflow-call
+      uses: "alstr/todo-to-issue-action@v4"

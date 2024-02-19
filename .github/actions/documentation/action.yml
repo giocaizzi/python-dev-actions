@@ -1,0 +1,31 @@
+name:  Documentation
+description: Build documentation
+
+runs:
+  using: composite
+  steps:
+    # full pandoc installation by
+    # nbsphinx extension
+    - name: Install pandoc
+      shell: bash
+      run: |
+        sudo apt-get install pandoc
+
+    - name: Set up dependencies
+      shell: bash
+      run: |
+        pip install --upgrade pip 
+        pip install -r requirements.txt
+        pip install -r docsrc/requirements.txt
+        pip install .
+
+    # build documentation
+    # run custom gitclean so to clear all local builds to avoid conflicts
+    # eg. (when with major refactoring in submodules)
+    - name: Build docs
+      shell: bash
+      run: |
+        cd docsrc/
+        make gitclean
+        make github-action
+        cd ..
