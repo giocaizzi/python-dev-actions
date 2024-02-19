@@ -6,12 +6,10 @@ on:
       python-version:
         description: "Python version"
         type: string
-        required: true
         default: "3.9"
       os:
         description: "Operating system"
         type: string
-        required: true
         default: "ubuntu-latest"
 
 jobs:
