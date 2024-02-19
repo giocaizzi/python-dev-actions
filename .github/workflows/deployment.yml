@@ -13,6 +13,12 @@ on:
         description: "Python version to run on"
         default: '3.9'
         type: string
+      python-tested-versions:
+        description: "Stringfied list of Python versions to test on"
+        type: string
+        # double quotes outside and single quotes inside
+        # for json parsing
+        default: "['3.7', '3.8', '3.9', '3.10','3.11','3.12']"
 
 jobs:
   # Run pre-checks workflow.
@@ -20,20 +26,53 @@ jobs:
   # - versioning (if PR)
   # - documentation-merge-check (if PR)
   pre-checks:
-    name:  ${{ inputs.os }}-py${{ inputs.python-version }}
-    uses: giocaizzi/python-dev-actions/.github/workflows/pre-checks.yml@main
-    with :
-      os: ${{ inputs.os }}
-      python-version: ${{ inputs.python-version }}
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # required for the versioning action
+
+      - name: Set up Python ${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Lint with Flake8
+        uses: giocaizzi/python-dev-actions/.github/actions/lint@main
+
+      - name: Versioning checks
+        # it's coded only for pull requests, this avoids if erroneously called on push
+        if: github.event_name == 'pull_request'
+        uses: giocaizzi/python-dev-actions/.github/actions/versioning@main
+
+      - name: Documentation merge check, if on ubuntu-latest
+        if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
+        uses: giocaizzi/python-dev-actions/.github/actions/documentation-merge-check@main
 
 
   # Run Tests workflow on specified OS for a matrix of python versions
   tests:
-    name: ${{ inputs.os }} tests
-    needs: "pre-checks"
-    uses: giocaizzi/python-dev-actions/.github/workflows/tests.yml@main
-    with:
-      os: ${{ inputs.os }}
+    needs: pre-checks
+    name: Python ${{ matrix.python-version }} on ${{inputs.os}}
+    strategy:
+      # allow the matrix to not fail completely if one fails
+      fail-fast: false
+      matrix:
+        python-version: ${{fromJson(inputs.python-tested-versions)}}
+    runs-on: ${{inputs.os}}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run tests
+        uses: giocaizzi/python-dev-actions/.github/actions/tests@main
+        with:
+          os: ${{inputs.os}}
 
   # # Execute post-deployment actions
   # post-deployment:
