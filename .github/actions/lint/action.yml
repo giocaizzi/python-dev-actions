@@ -9,6 +9,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - shell : bash
+      run: |
+        echo "Backend: ${{ inputs.backend }}"
+        
     - name: Lint with flake8 with pip backend
       if: ${{ inputs.backend }} == 'pip'
       shell: bash
