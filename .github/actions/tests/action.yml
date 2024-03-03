@@ -1,11 +1,6 @@
 name: Test
 description: Run tests with pytest
 
-inputs:
-  os:
-    description: 'Operating system'
-    default: 'ubuntu-latest'
-
 runs:
   using : 'composite'
   steps:

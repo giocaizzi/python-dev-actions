@@ -36,7 +36,6 @@ jobs:
       - uses: giocaizzi/python-dev-actions/.github/actions/setup-python@toml
         with:
           python-version: ${{inputs.python-version}}
-          python-package-type: ${{inputs.python-package-type}}
           fetch-depth: 0 #required for versioning check
 
       - name: Lint with Flake8
@@ -65,13 +64,10 @@ jobs:
     steps:
       - uses: giocaizzi/python-dev-actions/.github/actions/setup-python@toml
         with:
-          python-version: ${{inputs.python-version}}
-          python-package-type: ${{inputs.python-package-type}}
+          python-version: ${{matrix.python-version}}
 
       - name: Run tests
         uses: giocaizzi/python-dev-actions/.github/actions/tests@toml
-        with:
-          os: ${{inputs.os}}
 
   # # Execute post-deployment actions
   # post-deployment:
