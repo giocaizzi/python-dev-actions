@@ -62,6 +62,7 @@ jobs:
         uses: giocaizzi/python-dev-actions/.github/actions/versioning@toml
         with:
           package-folder : ${{inputs.subdir}}
+          python-package-type : ${{inputs.python-package-type}}
 
       # - name: Documentation merge check, if on ubuntu-latest
       #   if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
