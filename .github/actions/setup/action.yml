@@ -29,6 +29,8 @@ runs:
       if: inputs.subdir != '.'
       run: |
         cd ${{inputs.subdir}}
+        echo $(ls -la)
+        
 
     - name : Upgrade pip
       shell : bash
