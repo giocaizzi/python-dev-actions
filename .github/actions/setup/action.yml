@@ -46,3 +46,10 @@ runs:
       shell: bash
       run: |
         poetry install --with dev
+
+    - name: Activate poetry venv
+      # this allows avoiding 
+      # the use of `poetry run` for every command
+      shell: bash
+      run: |
+        source $(poetry env info --path)/bin/activate
