@@ -19,6 +19,8 @@ runs:
       with:
         fetch-depth: ${{inputs.fetch-depth}}
         sparse-checkout: ${{inputs.sdir}}
+        # files in the project root are not included during checkout
+        sparse-checkout-cone-mode: false
 
     - name: Set up Python ${{ inputs.python-version }}
       uses: actions/setup-python@v5
