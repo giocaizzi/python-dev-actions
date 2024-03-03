@@ -9,7 +9,7 @@ inputs:
     description: "Depth for git fetch"
   sdir:
     description: "Source directory"
-    default: "."
+    default: ""
     
 runs:
   using: "composite"
