@@ -1,0 +1,31 @@
+name: Check diff
+description: Check for changes in attributes in target file
+
+inputs:
+  target-file:
+    description: 'The file to check for changes'
+    required: true
+  target-attribute:
+    description: 'The attribute to check for changes'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Check for changed files in the package folder
+      shell: bash
+      run: |
+        echo "Checking ${{inputs.target-file}} file..."
+
+        head_init_version=$(git show HEAD:./${{ github.event.repository.name }}/${{inputs.target-file}} | grep -oP '${{inputs.target-attribute}} = "\K[^"]+')
+        echo "Head version: ${head_init_version}"
+
+        base_init_version=$(git show ${BASE_SHA}:./${{ github.event.repository.name }}/${{inputs.target-file}} | grep -oP '${{inputs.target-attribute}} = "\K[^"]+')
+        echo "Base version: ${base_init_version}"
+
+        if [ "$base_init_version" != "$head_init_version" ]; then
+          echo "The ${{inputs.target-attribute}} variable has been updated in package init."
+        else
+          echo "Error: The ${{inputs.target-attribute}} variable has not been updated in package init."
+          exit 1
+        fi

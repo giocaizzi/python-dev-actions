@@ -99,6 +99,10 @@ runs:
     - name: Execute pyproject.toml versioning checks
       shell: bash
       if: inputs.python-package-type == 'pyproject.toml'
-      run: |
-        echo "::warning::The pyproject.toml versioning checks are not implemented yet."
-        exit 0
+      # run: |
+      #   # echo "::warning::The pyproject.toml versioning checks are not implemented yet."
+      #   # exit 0
+      uses: giocaizzi/python-dev-actions/.github/actions/diff@toml
+      with:
+        target-file: inputs.python-package-type
+        target-attribute: 'version'
