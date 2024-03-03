@@ -42,6 +42,10 @@ runs:
         pytest
 
     - name: Run tests with poetry
+      if: inputs.backend == 'poetry'
+      shell: bash
+      run: |
+        poetry run pytest
 
     # upload coverage to codecov only once
     - name: "Upload coverage to Codecov"
