@@ -5,6 +5,9 @@ inputs:
   packaging-style:
     description: 'The python packaging style used in the repository (`setup.py` or `pyproject.toml`)'
     default: 'setup.py'
+  package-folder:
+    description: 'The folder where the package is located'
+    default: ''
 
 runs:
   using: composite
@@ -31,7 +34,12 @@ runs:
         echo "HEAD: $(git rev-parse HEAD)"
 
         # Check if there are changes in the package folder
-        CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
+        if [[ -z "${{ inputs.package-folder }}" ]]; then
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
+        else
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ inputs.package-folder }}/${{ github.event.repository.name }}/')
+        fi
+
         echo "Changed files: $CHANGED_FILES"
 
     - name: Quit if no changes
@@ -39,7 +47,7 @@ runs:
       run: |
         if [[ -z "$CHANGED_FILES" ]]; then
           echo "There are no changes in the ${{ github.event.repository.name }} folder"
-          exit 0
+          exit 1 | true
         fi
 
     - name: Execute setup.py versioning checks
