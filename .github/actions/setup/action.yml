@@ -7,9 +7,6 @@ inputs:
     default: "3.10"
   fetch-depth:
     description: "Depth for git fetch"
-  subdir:
-    description: "Subdirectory containing the package"
-    required: true
     
 runs:
   using: "composite"
@@ -23,14 +20,6 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
-
-    - name : Change directory to subdir
-      shell : bash
-      if: inputs.subdir != '.'
-      run: |
-        cd ${{inputs.subdir}}
-        echo $(ls -la)
-        
 
     - name : Upgrade pip
       shell : bash
