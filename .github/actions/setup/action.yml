@@ -30,7 +30,7 @@ runs:
     - name: List files
       shell: bash
       run: |
-        echo $(ls)
+        echo $(ls -a)
 
     - name: Move all files to root
       if: ${{inputs.sdir}} != ""
