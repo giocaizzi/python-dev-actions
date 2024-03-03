@@ -1,9 +1,25 @@
 name: Versioning Checks
 description: 'Check if the package version has been updated in the __init__.py and setup.py files'
 
+inputs:
+  python-package-type:
+    description: 'The python packaging style used in the repository (`setup.py` or `pyproject.toml`)'
+    default: 'setup.py'
+  package-folder:
+    description: 'The folder where the package is located'
+    default: ''
+
 runs:
   using: composite
   steps:
+    - name: Check inputs python-package-type
+      shell: bash
+      run: |
+        if [[ ${{ inputs.python-package-type }} != 'setup.py' && ${{ inputs.python-package-type }} != 'pyproject.toml' ]]; then
+          echo "Error: The python-package-type input must be either 'setup.py' or 'pyproject.toml'."
+          exit 1
+        fi
+      
     - name: Check for changed files in the package folder
       shell: bash
       run: |
@@ -17,10 +33,17 @@ runs:
         echo "Head SHA: ${HEAD_SHA}"
         echo "HEAD: $(git rev-parse HEAD)"
 
-        # Check if there are changes in the specific folder
-        CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
+        # Check if there are changes in the package folder
+        if [ -z "${{ inputs.package-folder }}" ]; then
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
+        else
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ inputs.package-folder }}/${{ github.event.repository.name }}/')
+        fi
 
-    - name: Execute versioning checks
+        echo "Changed files: $CHANGED_FILES"
+
+    - name: Execute setup.py versioning checks
+      if: inputs.python-package-type == 'setup.py'
       shell: bash
       run: |
         if [[ -n "$CHANGED_FILES" ]]; then
@@ -71,3 +94,12 @@ runs:
           echo "There are no changes in the ${{ github.event.repository.name }} folder"
           exit 0
         fi
+
+
+    - name: Execute pyproject.toml versioning checks
+      if: inputs.python-package-type == 'pyproject.toml'
+      uses: giocaizzi/python-dev-actions/.github/actions/diff@toml
+      with:
+        target-file: ${{ inputs.python-package-type }}
+        target-attribute: 'version'
+        package-folder: ${{ inputs.package-folder }}

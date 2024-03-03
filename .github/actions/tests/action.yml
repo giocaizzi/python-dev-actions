@@ -2,21 +2,13 @@ name: Test
 description: Run tests with pytest
 
 inputs:
-  os:
-    description: 'Operating system'
-    default: 'ubuntu-latest'
+  backend: 
+    description: "Backend to use (poetry, setuptools)"
+    default: "poetry"
 
 runs:
   using : 'composite'
   steps:
-    - name: Install dependencies
-      shell: bash
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install .
-        pip install -r tests/requirements.txt
-
     # pytest params specified in pytest.ini,
     # check if pytest.ini is in the root directory
     - name: Check pytest.ini on Linux and MacOS
@@ -43,10 +35,17 @@ runs:
           Write-Host "::warning ::pytest.ini not found, using default pytest params"
         }
 
-    - name: Run tests
+    - name: Run tests with setuptools backend
+      if: inputs.backend == 'setuptools'
       shell: bash
       run: |
         pytest
+
+    - name: Run tests with poetry
+      if: inputs.backend == 'poetry'
+      shell: bash
+      run: |
+        poetry run pytest
 
     # upload coverage to codecov only once
     - name: "Upload coverage to Codecov"
