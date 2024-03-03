@@ -5,6 +5,10 @@ on:
 
   workflow_call:
     inputs:
+      subdir:
+        description: "Subdirectory to run the workflow on. Default is the root of the repository"
+        type: string
+        default: '.'
       os:
         description: "Operating system to run on"
         default: 'ubuntu-latest'
@@ -37,6 +41,7 @@ jobs:
         with:
           python-version: ${{inputs.python-version}}
           fetch-depth: 0 #required for versioning check
+          subdir: ${{inputs.subdir}}
 
       - name: Lint with Flake8
         uses: giocaizzi/python-dev-actions/.github/actions/lint@toml
