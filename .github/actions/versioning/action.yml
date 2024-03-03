@@ -42,16 +42,8 @@ runs:
 
         echo "Changed files: $CHANGED_FILES"
 
-    - name: Quit if no changes
-      shell: bash
-      run: |
-        if [[ -n "$CHANGED_FILES" ]];then
-          echo "There are no changes in the ${{ github.event.repository.name }} folder"
-          exit 0
-        fi
-
     - name: Execute setup.py versioning checks
-      if: ${{inputs.packaging-style}} == 'setup.py'
+      if: inputs.packaging-style == 'setup.py'
       shell: bash
       run: |
         if [[ -n "$CHANGED_FILES" ]]; then
