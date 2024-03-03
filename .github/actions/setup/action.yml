@@ -36,7 +36,7 @@ runs:
       if: ${{inputs.sdir}} != ""
       shell: bash
       run: |
-        mv -r ./${{inputs.sdir}}/* .
+        mv ${{inputs.sdir}}/* .
         rm -rf ${{inputs.sdir}}
 
     - name: List files
