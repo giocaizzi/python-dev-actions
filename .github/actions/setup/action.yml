@@ -26,11 +26,6 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
-      
-    - name: List files
-      shell: bash
-      run: |
-        echo $(ls -a)
 
     - name: Move all files to root
       if: ${{inputs.sdir}} != ""
@@ -38,22 +33,16 @@ runs:
       run: |
         rsync -a ${{inputs.sdir}}/ .
 
-    - name: List files
-      shell: bash
-      run: |
-        echo $(ls -a)
-
     - name : Upgrade pip
       shell : bash
       run: |
         python -m pip install --upgrade pip
 
-    - name: Install dependencies
+    - name: Install poetry
       shell: bash
-      run: |
-        pip install flake8 flake8-rst-docstrings
+      run: pipx install poetry==1.2.0
 
     - name: Install package
       shell: bash
       run: |
-        pip install .[dev]
+        poetry install --with dev
