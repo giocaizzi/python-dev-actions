@@ -81,6 +81,7 @@ jobs:
 
       - name: Run tests
         uses: giocaizzi/python-dev-actions/.github/actions/tests@toml
+        secrets: inherit
         with:
           backend: ${{inputs.python-build-backend}}
 
