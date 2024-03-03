@@ -27,6 +27,13 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
+    - name: Move all files to root
+      if: ${{inputs.sdir}} != ""
+      shell: bash
+      run: |
+        mv ${{inputs.sdir}}/* .
+        rm -rf ${{inputs.sdir}}
+
     - name: List files
       shell: bash
       run: |
