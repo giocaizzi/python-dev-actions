@@ -24,6 +24,12 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
+    - name : Change directory to subdir
+      shell : bash
+      if: inputs.subdir != '.'
+      run: |
+        cd ${{inputs.subdir}}
+
     - name : Upgrade pip
       shell : bash
       run: |
@@ -38,9 +44,3 @@ runs:
       shell: bash
       run: |
         pip install .
-
-    - name : Change directory to subdir
-      shell : bash
-      if: inputs.subdir != '.'
-      run: |
-        cd ${{inputs.subdir}}
