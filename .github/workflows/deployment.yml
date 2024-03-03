@@ -32,6 +32,9 @@ on:
         default: 'poetry'
         type: string
 
+# receive inherited secrets
+env: ${{ secrets }}
+
 jobs:
   # Run pre-checks workflow.
   # - lint
