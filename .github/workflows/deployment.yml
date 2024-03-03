@@ -56,10 +56,10 @@ jobs:
         with:
           backend: ${{inputs.python-build-backend}}
 
-      # - name: Versioning checks
-      #   # it's coded only for pull requests, this avoids if erroneously called on push
-      #   # if: github.event_name == 'pull_request'
-      #   uses: giocaizzi/python-dev-actions/.github/actions/versioning@main
+      - name: Versioning checks
+        # it's coded only for pull requests, this avoids if erroneously called on push
+        # if: github.event_name == 'pull_request'
+        uses: giocaizzi/python-dev-actions/.github/actions/versioning@toml
 
       # - name: Documentation merge check, if on ubuntu-latest
       #   if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
