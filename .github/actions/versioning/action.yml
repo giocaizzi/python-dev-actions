@@ -45,9 +45,9 @@ runs:
     - name: Quit if no changes
       shell: bash
       run: |
-        if [[ -z "$CHANGED_FILES" ]]; then
+        if [[ -z $CHANGED_FILES ]]; then
           echo "There are no changes in the ${{ github.event.repository.name }} folder"
-          exit 1 | true
+          exit 0
         fi
 
     - name: Execute setup.py versioning checks
