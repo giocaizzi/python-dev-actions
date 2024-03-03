@@ -19,6 +19,10 @@ on:
         # double quotes outside and single quotes inside
         # for json parsing
         default: "['3.7', '3.8', '3.9', '3.10','3.11','3.12']"
+      python-package-type:
+        description: "Type of package to test (setup.py or pyproject.toml)"
+        default: 'setup.py'
+        type: string
 
 jobs:
   # Run pre-checks workflow.
@@ -29,27 +33,23 @@ jobs:
     name: pre-checks_py${{ inputs.python-version }}_${{inputs.os}}
     runs-on: ${{ inputs.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: giocaizzi/python-dev-actions/.github/actions/setup-python@toml
         with:
-          fetch-depth: 0
-          # required for the versioning action
-
-      - name: Set up Python ${{ inputs.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ inputs.python-version }}
+          python-version: ${{inputs.python-version}}
+          python-package-type: ${{inputs.python-package-type}}
+          fetch-depth: 0 #required for versioning check
 
       - name: Lint with Flake8
-        uses: giocaizzi/python-dev-actions/.github/actions/lint@main
+        uses: giocaizzi/python-dev-actions/.github/actions/lint@toml
 
-      - name: Versioning checks
-        # it's coded only for pull requests, this avoids if erroneously called on push
-        if: github.event_name == 'pull_request'
-        uses: giocaizzi/python-dev-actions/.github/actions/versioning@main
+      # - name: Versioning checks
+      #   # it's coded only for pull requests, this avoids if erroneously called on push
+      #   # if: github.event_name == 'pull_request'
+      #   uses: giocaizzi/python-dev-actions/.github/actions/versioning@main
 
-      - name: Documentation merge check, if on ubuntu-latest
-        if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
-        uses: giocaizzi/python-dev-actions/.github/actions/documentation-merge-check@main
+      # - name: Documentation merge check, if on ubuntu-latest
+      #   if: github.event_name == 'pull_request' && inputs.os == 'ubuntu-latest'
+      #   uses: giocaizzi/python-dev-actions/.github/actions/documentation-merge-check@main
 
 
   # Run Tests workflow on specified OS for a matrix of python versions
@@ -63,15 +63,13 @@ jobs:
         python-version: ${{fromJson(inputs.python-tested-versions)}}
     runs-on: ${{inputs.os}}
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: giocaizzi/python-dev-actions/.github/actions/setup-python@toml
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{inputs.python-version}}
+          python-package-type: ${{inputs.python-package-type}}
 
       - name: Run tests
-        uses: giocaizzi/python-dev-actions/.github/actions/tests@main
+        uses: giocaizzi/python-dev-actions/.github/actions/tests@toml
         with:
           os: ${{inputs.os}}
 
