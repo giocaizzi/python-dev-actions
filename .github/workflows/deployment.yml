@@ -28,7 +28,7 @@ on:
         default: 'setup.py'
         type: string
       python-build-backend:
-        description: "Python build backend to use (pip or poetry)"
+        description: "Python build backend to use (setuptools or poetry)"
         default: 'poetry'
         type: string
 

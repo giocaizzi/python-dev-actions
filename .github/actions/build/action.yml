@@ -3,7 +3,7 @@ description: Build and install python package with specified backend
 
 inputs:
   backend:
-    description: "Backend to use (poetry, pip)"
+    description: "Backend to use (poetry, setuptools)"
     default: "poetry"
 
 runs:
@@ -13,7 +13,7 @@ runs:
       if: ${{ inputs.backend }} == 'poetry'
       uses: giocaizzi/python-dev-actions/.github/actions/poetry@toml
 
-    # - name: Build with pip
-    #   if: ${{ inputs.backend }} == 'pip'
-    #   uses: giocaizzi/python-dev-actions/.github/actions/pip@toml
+    # - name: Build with setuptools
+    #   if: ${{ inputs.backend }} == 'setuptools'
+    #   uses: giocaizzi/python-dev-actions/.github/actions/setuptools@toml
     

@@ -3,7 +3,7 @@ description: 'Lint Python code with Flake8'
 
 inputs:
   backend:
-    description: "Backend to use (poetry, pip)"
+    description: "Backend to use (poetry, setuptools)"
     default: "poetry"
 
 runs:
@@ -13,8 +13,8 @@ runs:
       run: |
         echo "Backend: ${{ inputs.backend }}"
 
-    - name: Lint with flake8 with pip backend
-      if: inputs.backend == 'pip'
+    - name: Lint with flake8 with setuptools backend
+      if: inputs.backend == 'setuptools'
       shell: bash
       run: flake8 ${{ github.event.repository.name }}
 

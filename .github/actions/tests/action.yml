@@ -1,6 +1,11 @@
 name: Test
 description: Run tests with pytest
 
+inputs:
+  backend: 
+    description: "Backend to use (poetry, setuptools)"
+    default: "poetry"
+
 runs:
   using : 'composite'
   steps:
@@ -30,10 +35,13 @@ runs:
           Write-Host "::warning ::pytest.ini not found, using default pytest params"
         }
 
-    - name: Run tests
+    - name: Run tests with setuptools backend
+      if: inputs.backend == 'setuptools'
       shell: bash
       run: |
         pytest
+
+    - name: Run tests with poetry
 
     # upload coverage to codecov only once
     - name: "Upload coverage to Codecov"

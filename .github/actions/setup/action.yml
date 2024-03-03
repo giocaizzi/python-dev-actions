@@ -11,7 +11,7 @@ inputs:
     description: "Source directory"
     default: ""
   backend:
-    description: "Backend to use (poetry, pip)"
+    description: "Backend to use (poetry, setuptools)"
     default: "poetry"
     
 runs:
