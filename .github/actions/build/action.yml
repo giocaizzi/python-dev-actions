@@ -11,9 +11,9 @@ runs:
   steps:
     - name: Build with poetry
       if: ${{ inputs.backend }} == 'poetry'
-      uses: giocaizzi/python-dev-actions/.github/workflows/poetry@toml
+      uses: giocaizzi/python-dev-actions/.github/actions/poetry@toml
 
     # - name: Build with pip
     #   if: ${{ inputs.backend }} == 'pip'
-    #   uses: giocaizzi/python-dev-actions/.github/workflows/pip@toml
+    #   uses: giocaizzi/python-dev-actions/.github/actions/pip@toml
     
