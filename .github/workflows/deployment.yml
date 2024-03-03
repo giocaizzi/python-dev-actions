@@ -27,6 +27,10 @@ on:
         description: "Type of package to test (setup.py or pyproject.toml)"
         default: 'setup.py'
         type: string
+      python-build-backend:
+        description: "Python build backend to use (pip or poetry)"
+        default: 'poetry'
+        type: string
 
 jobs:
   # Run pre-checks workflow.
@@ -42,9 +46,12 @@ jobs:
           python-version: ${{inputs.python-version}}
           fetch-depth: 0 #required for versioning check
           sdir: ${{inputs.subdir}}
+          backend: ${{inputs.python-build-backend}}
 
       - name: Lint with Flake8
         uses: giocaizzi/python-dev-actions/.github/actions/lint@toml
+        with:
+          backend: ${{inputs.python-build-backend}}
 
       # - name: Versioning checks
       #   # it's coded only for pull requests, this avoids if erroneously called on push

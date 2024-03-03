@@ -1,9 +1,22 @@
 name: Lint with Flake8
 description: 'Lint Python code with Flake8'
 
+inputs:
+  backend:
+    description: "Backend to use (poetry, pip)"
+    default: "poetry"
+
 runs:
   using: composite
   steps:
-    - name: Lint with flake8
+    - name: Lint with flake8 with pip backend
+      if: ${{ inputs.backend }} == 'pip'
       shell: bash
       run: flake8 ${{ github.event.repository.name }}
+
+    - name: Lint with flake8 with poetry backend
+      if: ${{ inputs.backend }} == 'poetry'
+      shell: bash
+      run: poetry run flake8 ${{ github.event.repository.name }}
+    
+

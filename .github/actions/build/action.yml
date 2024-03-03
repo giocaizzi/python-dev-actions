@@ -1,0 +1,19 @@
+name: Build python
+description: Build and install python package with specified backend
+
+inputs:
+  backend:
+    description: "Backend to use (poetry, pip)"
+    default: "poetry"
+
+runs:
+  using: composite
+  steps:
+    - name: Build with poetry
+      if: ${{ inputs.backend }} == 'poetry'
+      uses: giocaizzi/python-dev-actions/.github/workflows/poetry@toml
+
+    # - name: Build with pip
+    #   if: ${{ inputs.backend }} == 'pip'
+    #   uses: giocaizzi/python-dev-actions/.github/workflows/pip@toml
+    
