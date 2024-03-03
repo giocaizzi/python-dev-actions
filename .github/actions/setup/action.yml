@@ -18,16 +18,12 @@ runs:
       uses: actions/checkout@v4
       with:
         fetch-depth: ${{inputs.fetch-depth}}
+        sparse-checkout: ${{inputs.sdir}}
 
     - name: Set up Python ${{ inputs.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
-
-    # - name: Change directory
-    #   shell: bash
-    #   if: ${{ inputs.sdir != '.' }}
-    #   run: cd ${{ inputs.sdir }}
 
     - name: List files
       shell: bash
