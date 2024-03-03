@@ -4,6 +4,11 @@ Handle versioning.
 
 Checks if the package version has been updated in **setup.py** and **__init_.py**
 
+Inputs:
+- `packaging-style` : The python packaging style used in the repository (`setup.py` or `pyproject.toml`). Default `setup.py`.
+- `package-folder` : The folder where the package is located. Default `` aka root.
+
+
 
 > **Note**
 >

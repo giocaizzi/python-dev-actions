@@ -1,9 +1,25 @@
 name: Versioning Checks
 description: 'Check if the package version has been updated in the __init__.py and setup.py files'
 
+inputs:
+  packaging-style:
+    description: 'The python packaging style used in the repository (`setup.py` or `pyproject.toml`)'
+    default: 'setup.py'
+  package-folder:
+    description: 'The folder where the package is located'
+    default: ''
+
 runs:
   using: composite
   steps:
+    - name: Check inputs packaging-style
+      shell: bash
+      run: |
+        if [[ ${{ inputs.packaging-style }} != 'setup.py' && ${{ inputs.packaging-style }} != 'pyproject.toml' ]]; then
+          echo "Error: The packaging-style input must be either 'setup.py' or 'pyproject.toml'."
+          exit 1
+        fi
+      
     - name: Check for changed files in the package folder
       shell: bash
       run: |
@@ -18,6 +34,11 @@ runs:
         echo "HEAD: $(git rev-parse HEAD)"
 
         # Check if there are changes in the specific folder
+        if [[ -z "${{ inputs.package-folder }}" ]]; then
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
+        else
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ inputs.package-folder }}/${{ github.event.repository.name }}/')
+        
         CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA './${{ github.event.repository.name }}/')
 
     - name: Execute versioning checks
