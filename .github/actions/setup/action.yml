@@ -24,7 +24,7 @@ runs:
     - name: List files
       shell: bash
       run: |
-        echo $(ls -la)
+        echo $(ls)
 
     - name : Upgrade pip
       shell : bash
