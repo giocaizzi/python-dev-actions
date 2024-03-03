@@ -12,14 +12,14 @@ runs:
     - shell : bash
       run: |
         echo "Backend: ${{ inputs.backend }}"
-        
+
     - name: Lint with flake8 with pip backend
-      if: ${{ inputs.backend }} == 'pip'
+      if: inputs.backend == 'pip'
       shell: bash
       run: flake8 ${{ github.event.repository.name }}
 
     - name: Lint with flake8 with poetry backend
-      if: ${{ inputs.backend }} == 'poetry'
+      if: inputs.backend == 'poetry'
       shell: bash
       run: poetry run flake8 ${{ github.event.repository.name }}
     
