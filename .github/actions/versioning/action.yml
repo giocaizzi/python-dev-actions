@@ -102,3 +102,4 @@ runs:
       with:
         target-file: "./${{ inputs.python-package-type }}"
         target-attribute: 'version'
+        package-folder: ${{ inputs.package-folder }}

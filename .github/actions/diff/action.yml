@@ -8,19 +8,32 @@ inputs:
   target-attribute:
     description: 'The attribute to check for changes'
     required: true
+  package-folder:
+    description: 'The package folder to check for changes'
+    required: true
 
 runs:
   using: composite
   steps:
+    - name: Build file path
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.package-folder }}" ]; then
+          FILE_PATH="./${{ inputs.target-file }}"
+        else
+          FILE_PATH="./${{ inputs.package-folder }}/${{ inputs.target-file }}"
+        fi
+        echo "File path: $FILE_PATH"
+
     - name: Check for changed files in the package folder
       shell: bash
       run: |
-        echo "Checking ${{ inputs.target-file }} file..."
+        echo "Checking $FILE_PATH file..."
 
-        head_init_version=$(git show HEAD:${{ inputs.target-file }} | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
+        head_init_version=$(git show HEAD:$FILE_PATH | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
         echo "Head version: ${head_init_version}"
 
-        base_init_version=$(git show ${BASE_SHA}:${{ inputs.target-file }} | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
+        base_init_version=$(git show ${BASE_SHA}:$FILE_PATH | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
         echo "Base version: ${base_init_version}"
 
         if [ "$base_init_version" != "$head_init_version" ]; then
