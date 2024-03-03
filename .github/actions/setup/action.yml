@@ -26,6 +26,11 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
+      
+    - name: List files
+      shell: bash
+      run: |
+        echo $(ls)
 
     - name: Move all files to root
       if: ${{inputs.sdir}} != ""
