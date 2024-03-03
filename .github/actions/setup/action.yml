@@ -38,10 +38,6 @@ runs:
       run: |
         rsync --remove-source-files -a ${{inputs.sdir}}/ .
 
-    - shell: bash
-      run: |
-        ls -Ra
-
     - name : Upgrade pip
       shell : bash
       run: |
