@@ -45,4 +45,5 @@ runs:
     - name: Install package
       shell: bash
       run: |
+        poetry lock
         poetry install --with dev
