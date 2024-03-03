@@ -36,14 +36,12 @@ jobs:
   pre-checks:
     name: pre-checks_py${{ inputs.python-version }}_${{inputs.os}}
     runs-on: ${{ inputs.os }}
-    defaults:
-      run:
-        working-directory: ${{inputs.subdir}}
     steps:
       - uses: giocaizzi/python-dev-actions/.github/actions/setup@toml
         with:
           python-version: ${{inputs.python-version}}
           fetch-depth: 0 #required for versioning check
+          sdir: ${{inputs.subdir}}
 
       - name: Lint with Flake8
         uses: giocaizzi/python-dev-actions/.github/actions/lint@toml
@@ -60,9 +58,6 @@ jobs:
 
   # Run Tests workflow on specified OS for a matrix of python versions
   tests:
-    defaults:
-      run:
-        working-directory: ${{inputs.subdir}}
     needs: pre-checks
     name: tests_py${{ matrix.python-version }}_${{inputs.os}}
     strategy:
