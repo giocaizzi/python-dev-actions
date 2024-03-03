@@ -19,16 +19,16 @@ runs:
       shell: bash
       run: |
         if [ -z "${{ inputs.package-folder }}" ]; then
-          FILE_PATH="./${{ inputs.target-file }}"
+          FILE_PATH=$("./${{ inputs.target-file }}")
         else
-          FILE_PATH="./${{ inputs.package-folder }}/${{ inputs.target-file }}"
+          FILE_PATH=$("./${{ inputs.package-folder }}/${{ inputs.target-file }}")
         fi
-        echo "File path: $FILE_PATH"
+        echo "File path: ${FILE_PATH}"
 
     - name: Check for changed files in the package folder
       shell: bash
       run: |
-        echo "Checking $FILE_PATH file..."
+        echo "Checking ${FILE_PATH} file..."
 
         head_init_version=$(git show HEAD:$FILE_PATH | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
         echo "Head version: ${head_init_version}"
