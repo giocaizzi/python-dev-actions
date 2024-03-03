@@ -21,6 +21,11 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
 
+    - name: List files
+      shell: bash
+      run: |
+        echo $(ls -la)
+
     - name : Upgrade pip
       shell : bash
       run: |
