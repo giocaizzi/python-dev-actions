@@ -15,17 +15,17 @@ runs:
     - name: Check for changed files in the package folder
       shell: bash
       run: |
-        echo "Checking ${{inputs.target-file}} file..."
+        echo "Checking ${{ inputs.target-file }} file..."
 
-        head_init_version=$(git show HEAD:./${{ github.event.repository.name }}/${{inputs.target-file}} | grep -oP '${{inputs.target-attribute}} = "\K[^"]+')
+        head_init_version=$(git show HEAD:./${{ github.event.repository.name }}/${{ inputs.target-file }} | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
         echo "Head version: ${head_init_version}"
 
-        base_init_version=$(git show ${BASE_SHA}:./${{ github.event.repository.name }}/${{inputs.target-file}} | grep -oP '${{inputs.target-attribute}} = "\K[^"]+')
+        base_init_version=$(git show ${BASE_SHA}:./${{ github.event.repository.name }}/${{ inputs.target-file }} | grep -oP '${{ inputs.target-attribute }} = "\K[^"]+')
         echo "Base version: ${base_init_version}"
 
         if [ "$base_init_version" != "$head_init_version" ]; then
-          echo "The ${{inputs.target-attribute}} variable has been updated in package init."
+          echo "The ${{ inputs.target-attribute }} variable has been updated in package init."
         else
-          echo "Error: The ${{inputs.target-attribute}} variable has not been updated in package init."
+          echo "Error: The ${{ inputs.target-attribute }} variable has not been updated in package init."
           exit 1
         fi
