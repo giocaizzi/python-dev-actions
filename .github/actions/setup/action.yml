@@ -38,6 +38,10 @@ runs:
       run: |
         rsync -a ${{inputs.sdir}}/ .
 
+    - shell: bash
+      run: |
+        ls -Ra
+
     - name : Upgrade pip
       shell : bash
       run: |
