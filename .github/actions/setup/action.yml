@@ -40,10 +40,9 @@ runs:
 
     - name: Install poetry
       shell: bash
-      run: pipx install poetry==1.2.0
+      run: pipx install poetry==1.7.1
 
     - name: Install package
       shell: bash
       run: |
-        poetry lock
         poetry install --with dev
