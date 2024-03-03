@@ -33,7 +33,7 @@ jobs:
     name: pre-checks_py${{ inputs.python-version }}_${{inputs.os}}
     runs-on: ${{ inputs.os }}
     steps:
-      - uses: giocaizzi/python-dev-actions/.github/actions/setup-python@toml
+      - uses: giocaizzi/python-dev-actions/.github/actions/setup@toml
         with:
           python-version: ${{inputs.python-version}}
           fetch-depth: 0 #required for versioning check
@@ -62,7 +62,7 @@ jobs:
         python-version: ${{fromJson(inputs.python-tested-versions)}}
     runs-on: ${{inputs.os}}
     steps:
-      - uses: giocaizzi/python-dev-actions/.github/actions/setup-python@toml
+      - uses: giocaizzi/python-dev-actions/.github/actions/setup@toml
         with:
           python-version: ${{matrix.python-version}}
 
