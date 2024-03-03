@@ -2,7 +2,7 @@ name: Versioning Checks
 description: 'Check if the package version has been updated in the __init__.py and setup.py files'
 
 inputs:
-  packaging-style:
+  python-package-type:
     description: 'The python packaging style used in the repository (`setup.py` or `pyproject.toml`)'
     default: 'setup.py'
   package-folder:
@@ -12,11 +12,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Check inputs packaging-style
+    - name: Check inputs python-package-type
       shell: bash
       run: |
-        if [[ ${{ inputs.packaging-style }} != 'setup.py' && ${{ inputs.packaging-style }} != 'pyproject.toml' ]]; then
-          echo "Error: The packaging-style input must be either 'setup.py' or 'pyproject.toml'."
+        if [[ ${{ inputs.python-package-type }} != 'setup.py' && ${{ inputs.python-package-type }} != 'pyproject.toml' ]]; then
+          echo "Error: The python-package-type input must be either 'setup.py' or 'pyproject.toml'."
           exit 1
         fi
       
@@ -43,7 +43,7 @@ runs:
         echo "Changed files: $CHANGED_FILES"
 
     - name: Execute setup.py versioning checks
-      if: inputs.packaging-style == 'setup.py'
+      if: inputs.python-package-type == 'setup.py'
       shell: bash
       run: |
         if [[ -n "$CHANGED_FILES" ]]; then
@@ -98,7 +98,7 @@ runs:
 
     - name: Execute pyproject.toml versioning checks
       shell: bash
-      if: inputs.packaging-style == 'pyproject.toml'
+      if: inputs.python-package-type == 'pyproject.toml'
       run: |
         echo "::warning::The pyproject.toml versioning checks are not implemented yet."
         exit 0
