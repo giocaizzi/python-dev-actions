@@ -100,5 +100,5 @@ runs:
       if: inputs.python-package-type == 'pyproject.toml'
       uses: giocaizzi/python-dev-actions/.github/actions/diff@toml
       with:
-        target-file: inputs.python-package-type
+        target-file: "./${{ inputs.python-package-type }}"
         target-attribute: 'version'
